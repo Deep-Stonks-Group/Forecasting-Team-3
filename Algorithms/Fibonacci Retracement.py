@@ -29,8 +29,7 @@ def add_fibonacci_retracement(data):
 
     #Currently an interval of 50
     fib_interval = 50
-    i = 0
-
+    
     fib_interval = fib_interval -1
 
     FRL = [NaN] *fib_interval
@@ -43,25 +42,20 @@ def add_fibonacci_retracement(data):
 
     fib_interval = fib_interval +1
 
-    while i+fib_interval <= data.shape[0]:
-        #Breaks up data to look at only a specified interval before a given data point
-        fib_data = data[:][i : i+fib_interval]
+    #Finds the lowest and highest value over the given interval for each row in the data frame
+    lows = [min(data['Low'][j-fib_interval:j]) for j in range(fib_interval, len(data) +1)]
+    highs = [max(data['High'][j-fib_interval:j]) for j in range(fib_interval, len(data) +1)]
 
-        #Calculates fibonacci values and adds them to lists
-        high = fib_data['High'][:].max()
-        low = fib_data['Low'][:].min()
+    for i in range(0, len(lows)):
+        difference = highs[i] - lows[i]
 
-        difference = high - low
-
-        FRL.append(low)
-        FR236.append(low + (difference * .236))
-        FR382.append(low + (difference * .382))
-        FR5.append(low + (difference * .5))
-        FR618.append(low + (difference * .618))
-        FR786.append(low + (difference * .786))
-        FRH.append(high)
-
-        i = i+1
+        FRL.append(lows[i])
+        FR236.append(lows[i] + (difference * .236))
+        FR382.append(lows[i] + (difference * .382))
+        FR5.append(lows[i] + (difference * .5))
+        FR618.append(lows[i] + (difference * .618))
+        FR786.append(lows[i] + (difference * .786))
+        FRH.append(highs[i])
     
     #Adds fibonacci levels to data frame
     data['FRL'] = FRL
