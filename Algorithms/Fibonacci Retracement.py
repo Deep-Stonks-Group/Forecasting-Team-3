@@ -67,6 +67,33 @@ def add_fibonacci_retracement(data):
     data['FRH'] = FRH
 
 
+def test_add_FR():
+    # Parameters
+    ticker = 'AAPL'
+    data_path = ticker+'_FR.csv'
+    interval = 50
+
+    # Loading test data
+    dummy_data = pandas.read_csv(data_path, index_col = 'Date')
+
+    # Getting Fibonacci Retracement Values
+    add_FR(dummy_data)
+    frL = dummy_data['FRL'].values
+    fr236 = dummy_data['FR236'].values
+    fr382 = dummy_data['FR382'].values
+    fr5 = dummy_data['FR5'].values
+    fr618 = dummy_data['FR618'].values
+    fr786 = dummy_data['FR786'].values
+    frH = dummy_data['FRH'].values
+
+    # Checking with dummy CSV data
+    assert all(np.round(dummy_data['L'][interval-1:], 4) == np.round(frL[interval-1:], 4))
+    assert all(np.round(dummy_data['236'][interval-1:], 4) == np.round(fr236[interval-1:], 4))
+    assert all(np.round(dummy_data['382'][interval-1:], 4) == np.round(fr382[interval-1:], 4))
+    assert all(np.round(dummy_data['5'][interval-1:], 4) == np.round(fr5[interval-1:], 4))
+    assert all(np.round(dummy_data['618'][interval-1:], 4) == np.round(fr618[interval-1:], 4))
+    assert all(np.round(dummy_data['786'][interval-1:], 4) == np.round(fr786[interval-1:], 4))
+    assert all(np.round(dummy_data['H'][interval-1:], 4) == np.round(frH[interval-1:], 4))
 
 
 
